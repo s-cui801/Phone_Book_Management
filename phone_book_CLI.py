@@ -61,6 +61,9 @@ class PhoneBookCLI:
 
         self.phonebook.update_contact(contact, first_name=first_name, last_name=last_name, phone_number=phone_number, email=email, address=address)
 
+        # Print the updated contact
+        print(f"Contact updated:{contact}")
+
     def delete_contact(self):
         # Search cantact using keyword
         keyword = input("Search by name or phone number: ")
@@ -83,6 +86,9 @@ class PhoneBookCLI:
 
         # Delete the contact
         self.phonebook.delete_contact(contact)
+
+        # Print the deleted contact
+        print(f"Contact deleted:{contact}")
 
     def main(self):
         while True:

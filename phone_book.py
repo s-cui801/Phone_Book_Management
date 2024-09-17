@@ -32,11 +32,9 @@ class PhoneBook:
 
     def update_contact(self, contact, **kwargs):
         # The **kwargs parameter is a special syntax in Python that allows the method to accept an arbitrary number of keyword arguments. 
-        # These keyword arguments are passed as a dictionary, where the keys are the argument names and the values are the corresponding values.
-        
+        # These keyword arguments are passed as a dictionary, where the keys are the argument names and the values are the corresponding values.   
         contact.update_contact(**kwargs)
-        # Print the updated contact
-        print(f"Contact updated:{contact}")
+        
         
     def delete_contact(self, contact):
         # Delete a contact by index
@@ -54,5 +52,5 @@ class PhoneBook:
             for contact in self.contacts:
                 writer.writerow([contact.first_name, contact.last_name, contact.phone_number, contact.email, contact.address])
     
-    
+
 
