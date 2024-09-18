@@ -2,6 +2,7 @@
 from phone_book import PhoneBook
 from contact import Contact
 import unittest
+import datetime
 
 class Test_PhoneBook(unittest.TestCase):
     def setUp(self):
@@ -27,6 +28,15 @@ class Test_PhoneBook(unittest.TestCase):
         contact = self.phonebook.search_contact("Johnson")[0]
         self.phonebook.delete_contact(contact)
         self.assertEqual(len(self.phonebook.search_contact("Johnson")), 0)
+    def test_search_contact_by_updated_time(self):
+        self.phonebook.import_contacts("data.csv")
+        results = self.phonebook.search_contact_by_time(datetime.datetime(2021, 1, 1), datetime.datetime(2021, 1, 31))
+        self.assertEqual(len(results), 0)
+
+        results = self.phonebook.search_contact_by_time(datetime.datetime(2024, 1, 1), datetime.datetime(2024, 12, 31))
+        self.assertEqual(len(results), 4)
+
+        
 
 if __name__ == "__main__":
     unittest.main()

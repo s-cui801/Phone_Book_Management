@@ -1,6 +1,7 @@
 # This file will provide a command-line interface for users to interact with the phonebook application.
 from phone_book import PhoneBook
 from contact import Contact
+from datetime import datetime
 
 class PhoneBookCLI:
     def __init__(self):
@@ -36,6 +37,66 @@ class PhoneBookCLI:
                 print(f"{idx}: {contact}")
         else:
             print("No contacts found.")
+
+    def search_contact_by_updated_time(self):
+        '''
+            Search contacts by time range.
+            Print the contacts created or updated within the specified time range.
+        '''
+        while True:
+            # Get valid start and end time from the user
+            start_time = self.__get_valid_time("Enter start time (Format: YYYY-MM-DD) or type 'menu' to return to the main menu: ")
+            if start_time is None:
+                return
+            end_time = self.__get_valid_time("Enter end time (Format: YYYY-MM-DD) or type 'menu' to return to the main menu: ")
+            if end_time is None:
+                return
+        
+            # Check if the start time is greater than the end time
+            if start_time > end_time:
+                print("Error: Start time cannot be greater than end time.")
+                input_str = input("Type 'menu' to return to the main menu or press ENTER to continue: ")
+                if input_str.lower() == "menu":
+                    return
+                continue
+            else:
+                break  
+        # Search for contacts within the specified time range
+        contacts = self.phonebook.search_contact_by_updated_time(start_time, end_time)
+
+        # Print the search results
+        for contact in contacts:
+            print(contact)
+    
+    def search_contact_by_created_time(self):
+        '''
+            Search contacts by time range.
+            Print the contacts created within the specified time range.
+        '''
+        while True:
+            # Get valid start and end time from the user
+            start_time = self.__get_valid_time("Enter start time (Format: YYYY-MM-DD) or type 'menu' to return to the main menu: ")
+            if start_time is None:
+                return
+            end_time = self.__get_valid_time("Enter end time (Format: YYYY-MM-DD) or type 'menu' to return to the main menu: ")
+            if end_time is None:
+                return
+        
+            # Check if the start time is greater than the end time
+            if start_time > end_time:
+                print("Error: Start time cannot be greater than end time.")
+                input_str = input("Type 'menu' to return to the main menu or press ENTER to continue: ")
+                if input_str.lower() == "menu":
+                    return
+                continue
+            else:
+                break  
+        # Search for contacts within the specified time range
+        contacts = self.phonebook.search_contact_by_created_time(start_time, end_time)
+
+        # Print the search results
+        for contact in contacts:
+            print(contact)
 
     def list_contacts(self):
         contacts = self.phonebook.list_contacts()
@@ -125,7 +186,19 @@ class PhoneBookCLI:
                     self.import_contacts()
 
             elif choice == "2":
-                self.search_contact()
+                print("1. Search by name or phone number")
+                print("2. Search by updated time range")
+                print("3. Search by created time range")
+                print("4. Return to main menu")
+                choice = input("Enter your choice: ")
+                if choice == "1":
+                    self.search_contact()
+                elif choice == "2":
+                    self.search_contact_by_updated_time()
+                elif choice == "3":
+                    self.search_contact_by_created_time()
+                elif choice == "4":
+                    continue
 
             elif choice == "3":
                 self.list_contacts()
@@ -138,6 +211,17 @@ class PhoneBookCLI:
 
             elif choice == "6":
                 break
+    
+    def __get_valid_time(self, prompt):
+        while True:
+            time_str = input(prompt)
+            if time_str.lower() == "menu":
+                return None
+            try:
+                time = datetime.strptime(time_str, "%Y-%m-%d")
+                return time
+            except ValueError:
+                print("Invalid time format. Please use YYYY-MM-DD.")
 
 
 if __name__ == "__main__":

@@ -33,8 +33,8 @@ class PhoneBook:
                         first_name = row['first_name']
                         last_name = row['last_name']
                         phone_number = row['phone_number']
-                        email = row.get(['email'], None) if 'email' in row else None
-                        address = row.get(['address'], None) if 'address' in row else None
+                        email = row.get('email', None)
+                        address = row.get('address', None) # Using dict.get() to handle missing 'address' key
                         # Try to add a new contact. This will raise a ValueError if data is invalid.
                         self.add_contact(first_name, last_name, phone_number, email, address)
                     except ValueError as ve:
@@ -61,14 +61,28 @@ class PhoneBook:
         logging.info(f"Search results for '{keyword}': {results}")
         return results
     
-    def search_contact_by_time(self, start_time, end_time):
-        # TODO: Implement this method
-        # Search for contacts created or updated within a specific time range
-        # Return a list of contacts that were created or updated within the specified time range.
-        # Return an empty list if no contacts are found.
-        results = [contact for contact in self.contacts if start_time <= contact.created_at <= end_time or start_time <= contact.updated_at <= end_time]
-        logging.info(f"Search results for contacts created or updated between {start_time} and {end_time}: {results}")
+    def search_contact_by_updated_time(self, start_time, end_time):
+        '''
+            Search for contacts updated within a specific time range.
+            Raise a ValueError if the start time is greater than the end time. 
+            Return a list of contacts that were updated within the specified time range.
+            Return an empty list if no contacts are found.
+        '''
+        results = [contact for contact in self.contacts if start_time <= contact.updated_at <= end_time]
+        logging.info(f"Search results for contacts updated between {start_time} and {end_time}: {results}")
         return results
+    
+    def search_contact_by_created_time(self, start_time, end_time):
+        '''
+            Search for contacts created within a specific time range.
+            Raise a ValueError if the start time is greater than the end time. 
+            Return a list of contacts that were created within the specified time range.
+            Return an empty list if no contacts are found.
+        '''
+        results = [contact for contact in self.contacts if start_time <= contact.created_at <= end_time]
+        logging.info(f"Search results for contacts created between {start_time} and {end_time}: {results}")
+        return results
+
 
     def update_contact(self, contact, **kwargs):
         # Update a contact with the provided keyword arguments
@@ -100,5 +114,4 @@ class PhoneBook:
                 writer.writerow([contact.first_name, contact.last_name, contact.phone_number, contact.email, contact.address])
             logging.info(f"Contacts exported to {csv_file}")
     
-
 

@@ -1,1 +1,6 @@
 2024-09-18 15:49:29,225 - Failed to add new contact: Invalid email address
+2024-09-18 16:22:18,038 - Listing all contacts.
+2024-09-18 16:24:48,667 - Search results for contacts created or updated between 2021-01-01 00:00:00 and 2021-01-31 00:00:00: []
+2024-09-18 16:27:45,971 - Search results for contacts created or updated between 2021-01-01 00:00:00 and 2021-01-31 00:00:00: []
+2024-09-18 16:27:45,972 - Search results for contacts created or updated between 2024-01-01 00:00:00 and 2024-12-31 00:00:00: [<contact.Contact object at 0x0000019849153DA0>, <contact.Contact object at 0x0000019849153F80>, <contact.Contact object at 0x0000019849153E00>, <contact.Contact object at 0x00000198491840B0>]
+2024-09-18 17:04:00,736 - Search results for contacts created or updated between 2020-01-01 00:00:00 and 2024-12-31 00:00:00: [<contact.Contact object at 0x00000234A4F35E80>, <contact.Contact object at 0x00000234A4F36060>, <contact.Contact object at 0x00000234A4F35EE0>, <contact.Contact object at 0x00000234A4F36150>]
