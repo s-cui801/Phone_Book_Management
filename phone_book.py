@@ -3,6 +3,8 @@
 import csv
 import logging
 from contact import Contact
+# Configure logging
+logging.basicConfig(filename='phonebook.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
 class PhoneBook:
     def __init__(self):
@@ -56,6 +58,7 @@ class PhoneBook:
         # Search for contacts by keyword (name or phone number)
         # Return a list of contacts that match the keyword. Return an empty list if no contacts are found.
         results = [contact for contact in self.contacts if keyword.lower() in contact.first_name.lower() or keyword.lower() in contact.last_name.lower() or keyword in contact.phone_number]
+        logging.info(f"Search results for '{keyword}': {results}")
         return results
     
     def search_contact_by_time(self, start_time, end_time):
@@ -64,6 +67,7 @@ class PhoneBook:
         # Return a list of contacts that were created or updated within the specified time range.
         # Return an empty list if no contacts are found.
         results = [contact for contact in self.contacts if start_time <= contact.created_at <= end_time or start_time <= contact.updated_at <= end_time]
+        logging.info(f"Search results for contacts created or updated between {start_time} and {end_time}: {results}")
         return results
 
     def update_contact(self, contact, **kwargs):
@@ -80,9 +84,11 @@ class PhoneBook:
     def delete_contact(self, contact):
         # Delete a contact by index
         self.contacts.remove(contact)
+        logging.info(f"Contact deleted: {contact}")
 
     def list_contacts(self):
         # List all contacts
+        logging.info("Listing all contacts.")
         return self.contacts
     
     def export_contacts(self, csv_file):
@@ -92,6 +98,7 @@ class PhoneBook:
             writer.writerow(['first_name', 'last_name', 'phone_number', 'email', 'address'])
             for contact in self.contacts:
                 writer.writerow([contact.first_name, contact.last_name, contact.phone_number, contact.email, contact.address])
+            logging.info(f"Contacts exported to {csv_file}")
     
 
 
