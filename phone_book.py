@@ -6,6 +6,8 @@ from contact import Contact
 # Configure logging
 logging.basicConfig(filename='phonebook.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
+ORDER_DICT_LOGGING = {False: "ascending", True: "descending"} # Dictionary to map boolean values to string values. Static
+
 class PhoneBook:
     def __init__(self):
         self.contacts = []  # List to store Contact objects
@@ -103,6 +105,19 @@ class PhoneBook:
     def list_contacts(self):
         # List all contacts
         logging.info("Listing all contacts.")
+        return self.contacts
+    
+    def sort_contacts(self, key='first_name', reverse=False):
+        '''
+            Sort contacts by the specified key.
+            Return a list of sorted contacts.
+            The key parameter specifies the attribute to sort by (e.g., 'first_name', 'last_name', 'phone_number', 'email', 'address').
+            By default, contacts are sorted by first name in ascending order.
+            Raise a ValueError if the key is not a valid attribute of the Contact class.
+        '''
+        # Sort contacts by the specified key
+        self.contacts.sort(key=lambda x: getattr(x, key), reverse=reverse)
+        logging.info(f"Contacts sorted by {key} in {ORDER_DICT_LOGGING[reverse]} order.")
         return self.contacts
     
     def export_contacts(self, csv_file):

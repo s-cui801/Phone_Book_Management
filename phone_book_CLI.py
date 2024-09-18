@@ -3,6 +3,9 @@ from phone_book import PhoneBook
 from contact import Contact
 from datetime import datetime
 
+ATTRIBUTE_DICT = {"1": "first_name", "2": "last_name", "3": "created_at", "4": "updated_at"}
+ORDER_DICT = {"1": False, "2": True}
+
 class PhoneBookCLI:
     def __init__(self):
         self.phonebook = PhoneBook()
@@ -100,9 +103,49 @@ class PhoneBookCLI:
 
     def list_contacts(self):
         contacts = self.phonebook.list_contacts()
+        # Print message if no contacts are found
+        if not contacts:
+            print("No contacts found.")
+            return
         # Note that print(contacts) will result in printing None at the end.
         for contact in contacts:
             print(contact)
+    
+    def list_contacts_sorted(self):
+        while True:
+            print("1. Sort by First Name")
+            print("2. Sort by Last Name")
+            print("3. Sort by Created Time")
+            print("4. Sort by Updated Time")
+            print("5. Return to main menu")
+            choice = input("Enter your choice: ")
+            if choice == "5":
+                return
+            if choice <= "0" or choice > "5":
+                print("Invalid choice. Please enter a number between 1 and 5.")
+                continue
+            else:
+                # Get the attribute and order for sorting
+                key = ATTRIBUTE_DICT[choice]
+                while True:
+                    print("1. Ascending order")
+                    print("2. Descending order")
+                    choice = input("Enter your choice: ")
+                    if choice <= "0" or choice > "2":
+                        print("Invalid choice. Please enter a number between 1 and 2.")
+                        continue
+                    else:
+                        order = ORDER_DICT[choice]
+                        break
+                break
+        contacts = self.phonebook.sort_contacts(key, order)
+        print("Contacts sorted by", key, "in", "ascending" if not order else "descending", "order:")
+        for contact in contacts:
+            print(contact)
+
+                
+
+
 
     def update_contact(self):
         # Search cantact using keyword
@@ -172,7 +215,8 @@ class PhoneBookCLI:
             print("3. List Contacts")
             print("4. Update Contact")
             print("5. Delete Contact")
-            print("6. Quit")
+            print("6. Sort Contacts")
+            print("7. Quit")
 
             choice = input("Enter your choice: ")
 
@@ -210,6 +254,9 @@ class PhoneBookCLI:
                 self.delete_contact()
 
             elif choice == "6":
+                self.list_contacts_sorted()
+
+            elif choice == "7":
                 break
     
     def __get_valid_time(self, prompt):

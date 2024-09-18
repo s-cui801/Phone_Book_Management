@@ -4,3 +4,13 @@
 2024-09-18 16:27:45,971 - Search results for contacts created or updated between 2021-01-01 00:00:00 and 2021-01-31 00:00:00: []
 2024-09-18 16:27:45,972 - Search results for contacts created or updated between 2024-01-01 00:00:00 and 2024-12-31 00:00:00: [<contact.Contact object at 0x0000019849153DA0>, <contact.Contact object at 0x0000019849153F80>, <contact.Contact object at 0x0000019849153E00>, <contact.Contact object at 0x00000198491840B0>]
 2024-09-18 17:04:00,736 - Search results for contacts created or updated between 2020-01-01 00:00:00 and 2024-12-31 00:00:00: [<contact.Contact object at 0x00000234A4F35E80>, <contact.Contact object at 0x00000234A4F36060>, <contact.Contact object at 0x00000234A4F35EE0>, <contact.Contact object at 0x00000234A4F36150>]
+2024-09-18 18:39:53,240 - Listing all contacts.
+2024-09-18 18:39:59,219 - Listing all contacts.
+2024-09-18 18:40:33,248 - Listing all contacts.
+2024-09-18 18:41:37,143 - Contacts sorted by first_name in ascending order.
+2024-09-18 18:44:41,591 - Listing all contacts.
+2024-09-18 18:45:41,087 - Listing all contacts.
+2024-09-18 18:46:06,409 - Contacts sorted by first_name in ascending order.
+2024-09-18 18:46:22,345 - Contacts sorted by first_name in descending order.
+2024-09-18 18:46:40,264 - Contacts sorted by last_name in descending order.
+2024-09-18 18:46:50,569 - Contacts sorted by created_at in ascending order.
