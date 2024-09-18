@@ -7,16 +7,27 @@ class PhoneBookCLI:
         self.phonebook = PhoneBook()
 
     def add_contact(self):
-        #TODO: Add validation for everything
-        first_name = input("First Name: ")
-        last_name = input("Last Name: ")
-        phone_number = input("Phone Number: ")
+        first_name = input("First Name (Required): ")
+        last_name = input("Last Name (Required): ")
+        phone_number = input("Phone Number (Required, Format (###) ###-####): ")
         email = input("Email (Optional): ")
         address = input("Address (Optional): ")
 
-        contact = Contact(first_name, last_name, phone_number, email, address)
-        self.phonebook.add_contact(contact)
+        try:
+            self.phonebook.add_contact(first_name, last_name, phone_number, email, address)
+            print("Contact added successfully.")
+            print(f"New contact: {self.phonebook.contacts[-1]}")
+        except ValueError as ve:
+            print(f"Error: {ve}")
 
+    def import_contacts(self):
+        csv_file = input("Enter CSV file path: ")
+        try:
+            self.phonebook.import_contacts(csv_file)
+            print("Contacts imported successfully.")
+        except ValueError as ve:
+            print(f"Error: {ve}")
+    
     def search_contact(self):
         keyword = input("Search by name or phone number: ")
         results = self.phonebook.search_contact(keyword)
@@ -59,10 +70,13 @@ class PhoneBookCLI:
         email = input("Email (Optional, leave blank to keep unchanged): ")
         address = input("Address (Optional, leave blank to keep unchanged): ")
 
-        self.phonebook.update_contact(contact, first_name=first_name, last_name=last_name, phone_number=phone_number, email=email, address=address)
-
-        # Print the updated contact
-        print(f"Contact updated:{contact}")
+        try:
+            self.phonebook.update_contact(contact, first_name=first_name, last_name=last_name, phone_number=phone_number, email=email, address=address)
+            print("Contact updated successfully.")
+            print(f"Updated contact: {contact}")
+        except ValueError as ve:
+            print(f"Error: {ve}")
+            return
 
     def delete_contact(self):
         # Search cantact using keyword
@@ -108,8 +122,7 @@ class PhoneBookCLI:
                 if choice == "1":
                     self.add_contact()
                 elif choice == "2":
-                    csv_file = input("Enter CSV file name: ")
-                    self.phonebook.import_contacts(csv_file)
+                    self.import_contacts()
 
             elif choice == "2":
                 self.search_contact()
