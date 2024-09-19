@@ -33,3 +33,19 @@
 2024-09-19 10:35:06,390 - Contacts exported to export.csv
 2024-09-19 10:35:32,553 - Contacts exported to export.csv
 2024-09-19 11:28:45,380 - Listing all contacts.
+2024-09-19 12:16:55,570 - Failed to add new contact: Phone number must be in the format (###) ###-####
+2024-09-19 12:16:55,571 - Error in row6: Phone number must be in the format (###) ###-####
+2024-09-19 12:16:55,571 - Failed to add new contact: Invalid email address
+2024-09-19 12:16:55,571 - Error in row7: Invalid email address
+2024-09-19 12:16:55,572 - Failed to add new contact: First name is required.
+2024-09-19 12:16:55,572 - Error in row8: First name is required.
+2024-09-19 12:16:55,572 - Failed to add new contact: Last name is required.
+2024-09-19 12:16:55,572 - Error in row9: Last name is required.
+2024-09-19 13:55:23,216 - Failed to add new contact: Phone number must be in the format (###) ###-####
+2024-09-19 13:55:23,217 - Error in row6: Phone number must be in the format (###) ###-####
+2024-09-19 13:55:23,218 - Failed to add new contact: Invalid email address
+2024-09-19 13:55:23,218 - Error in row7: Invalid email address
+2024-09-19 13:55:23,219 - Failed to add new contact: First name is required.
+2024-09-19 13:55:23,219 - Error in row8: First name is required.
+2024-09-19 13:55:23,219 - Failed to add new contact: Last name is required.
+2024-09-19 13:55:23,219 - Error in row9: Last name is required.

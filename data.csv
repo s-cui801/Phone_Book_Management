@@ -2,4 +2,10 @@ first_name,last_name,phone_number,email,address
 John,Smith,(123) 456-7890,john@example.com,456 Edward St
 Johnson,Doe,(999) 999-9999,johnson@example.com,80 Prince Rd
 Lily,Smith,(343) 343-7890,lilys@example.com,76 Laurier St
-Emily,Ying,(555) 455-9999,,
+Emily,Ying,(555) 455-9999,
+Ming,Li,(***),
+Li,Chen,(999) 123-4567,lichen123
+,Smith,(123) 456-7890,
+Lily,,(343) 343-7890,
+
+

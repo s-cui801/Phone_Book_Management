@@ -13,8 +13,10 @@ class PhoneBook:
         self.contacts = []  # List to store Contact objects
 
     def add_contact(self, first_name, last_name, phone_number, email=None, address=None):
-        # Create a new contact with the provided attributes
-        # Raise a ValueError if the contact cannot be created due to missing or invalid attributes
+        '''
+            Create a new contact with the provided attributes.
+            Raise a ValueError if the contact cannot be created due to missing or invalid attributes.
+        '''
         try:
             new_contact = Contact(first_name, last_name, phone_number, email, address)
             self.contacts.append(new_contact)
@@ -25,8 +27,11 @@ class PhoneBook:
         
 
     def import_contacts(self, csv_file):
-        # Read contacts from a CSV file and add them to the phone book
-        # The first row of the CSV file should be the header row.
+        '''
+            Read contacts from a CSV file and add them to the phone book.
+            The first row of the CSV file should be the header row.
+            Raise a ValueError if the file is not found, cannot be read, or has invalid CSV format.
+        '''
         try:
             with open(csv_file, 'r') as file:
                 reader = csv.DictReader(file)
@@ -57,8 +62,11 @@ class PhoneBook:
                 
 
     def search_contact(self, keyword):
-        # Search for contacts by keyword (name or phone number)
-        # Return a list of contacts that match the keyword. Return an empty list if no contacts are found.
+        '''
+            Search for contacts by keyword (name or phone number).
+            Return a list of contacts that match the keyword.
+            Return an empty list if no contacts are found.
+        '''
         results = [contact for contact in self.contacts if keyword.lower() in contact.first_name.lower() or keyword.lower() in contact.last_name.lower() or keyword in contact.phone_number]
         logging.info(f"Search results for '{keyword}': {results}")
         return results
@@ -87,9 +95,12 @@ class PhoneBook:
 
 
     def update_contact(self, contact, **kwargs):
-        # Update a contact with the provided keyword arguments
-        # The **kwargs parameter is a special syntax in Python that allows the method to accept an arbitrary number of keyword arguments. 
-        # These keyword arguments are passed as a dictionary, where the keys are the argument names and the values are the corresponding values.   
+        '''
+            Update a contact with the provided keyword arguments.
+            The **kwargs parameter is a special syntax in Python that allows the method to accept an arbitrary number of keyword arguments.
+            These keyword arguments are passed as a dictionary, where the keys are the argument names and the values are the corresponding values.
+            Raise a ValueError if the contact cannot be updated due to missing or invalid attributes.
+        '''
         try:
             contact.update_contact(**kwargs)
         except ValueError as ve:
@@ -98,17 +109,24 @@ class PhoneBook:
         
         
     def delete_contact(self, contact):
-        # Delete a contact by index
+        '''
+            Delete a contact from the phone book.
+        '''
         self.contacts.remove(contact)
         logging.info(f"Contact deleted: {contact}")
     
     def delete_all_contacts(self):
-        # Delete all contacts
+        '''
+            Delete all contacts from the phone book.
+        '''
         self.contacts = []
         logging.info("All contacts deleted.")
 
     def list_contacts(self):
-        # List all contacts
+        '''
+            List all contacts in the phone book.
+            Return a list of all contacts.
+        '''
         logging.info("Listing all contacts.")
         return self.contacts
     
@@ -124,19 +142,6 @@ class PhoneBook:
         self.contacts.sort(key=lambda x: getattr(x, key), reverse=reverse)
         logging.info(f"Contacts sorted by {key} in {ORDER_DICT_LOGGING[reverse]} order.")
         return self.contacts
-    
-    def filter_contacts(self, key, value):
-        # TODO: Implement this method
-        '''
-            Filter contacts by the specified key and value.
-            Return a list of contacts that match the specified key and value.
-            The key parameter specifies the attribute to filter by (e.g., 'first_name', 'last_name', 'phone_number', 'email', 'address').
-            Raise a ValueError if the key is not a valid attribute of the Contact class.
-        '''
-        # Filter contacts by the specified key and value
-        results = [contact for contact in self.contacts if getattr(contact, key) == value]
-        logging.info(f"Filtered contacts by {key} with value {value}: {results}")
-        return results
     
     def group_contacts_by_initial_letter(self, key):
         '''
@@ -174,7 +179,11 @@ class PhoneBook:
         return groups
          
     def export_contacts(self, csv_file):
-        # Export contacts to a CSV file
+        '''
+            Export contacts to a CSV file.
+            The CSV file will contain the following columns: first_name, last_name, phone_number, email, address.
+            Raise a ValueError if the contacts cannot be exported due to an IO error.
+        '''
         try:
             with open(csv_file, 'w', newline='') as file:
                 writer = csv.writer(file)

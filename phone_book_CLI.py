@@ -249,7 +249,33 @@ class PhoneBookCLI:
             return
     
     def main(self):
+        """
+        Main function to run the phone book CLI application.
+        This function provides a command-line interface for managing a phone book.
+        It presents a menu with the following options:
+        1. Add Contact
+            - Add contacts manually
+            - Load contacts from a CSV file
+        2. Search Contact
+            - Search by name or phone number
+            - Search by updated time range
+            - Search by created time range
+        3. List Contacts
+            - List all contacts
+            - List contacts in groups
+        4. Update Contact
+        5. Delete Contact
+            - Search to delete contacts
+            - Delete all contacts
+        6. Sort Contacts
+            - Sort contacts by first name, last name, created time, or updated time
+            - Sort in ascending or descending order
+            - Return to main menu
+        7. Quit
+        The function loops indefinitely until the user chooses to quit.
+        """
         while True:
+            print("Welcome to the Phone Book Manager!")
             print("1. Add Contact")
             print("2. Search Contact")
             print("3. List Contacts")
