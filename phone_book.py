@@ -101,6 +101,11 @@ class PhoneBook:
         # Delete a contact by index
         self.contacts.remove(contact)
         logging.info(f"Contact deleted: {contact}")
+    
+    def delete_all_contacts(self):
+        # Delete all contacts
+        self.contacts = []
+        logging.info("All contacts deleted.")
 
     def list_contacts(self):
         # List all contacts
@@ -120,13 +125,64 @@ class PhoneBook:
         logging.info(f"Contacts sorted by {key} in {ORDER_DICT_LOGGING[reverse]} order.")
         return self.contacts
     
+    def filter_contacts(self, key, value):
+        # TODO: Implement this method
+        '''
+            Filter contacts by the specified key and value.
+            Return a list of contacts that match the specified key and value.
+            The key parameter specifies the attribute to filter by (e.g., 'first_name', 'last_name', 'phone_number', 'email', 'address').
+            Raise a ValueError if the key is not a valid attribute of the Contact class.
+        '''
+        # Filter contacts by the specified key and value
+        results = [contact for contact in self.contacts if getattr(contact, key) == value]
+        logging.info(f"Filtered contacts by {key} with value {value}: {results}")
+        return results
+    
+    def group_contacts_by_initial_letter(self, key):
+        '''
+            Group contacts by the initial letter of the specified key.
+            Return a dictionary where the keys are the initial letters and the values are lists of contacts.
+            The key parameter specifies the attribute to group by (e.g., 'first_name', 'last_name', 'phone_number', 'email', 'address').
+            Raise a ValueError if the key is not a valid attribute of the Contact class.
+        '''
+        # Group contacts by the initial letter of the specified key
+        groups = {}
+        for contact in self.contacts:
+            initial = getattr(contact, key)[0].upper()
+            if initial not in groups:
+                groups[initial] = []
+            groups[initial].append(contact)
+        groups = dict(sorted(groups.items())) # Sort the dictionary by key
+        logging.info(f"Contacts grouped by initial letter of {key}: {groups}")
+        return groups
+    
+    def group_contacts_by_area_code(self):
+        '''
+            Group contacts by the area code of their phone numbers.
+            Return a dictionary where the keys are the area codes and the values are lists of contacts.
+            Return an empty dictionary if no contacts have phone numbers.
+        '''
+        # Group contacts by the area code of their phone numbers
+        groups = {}
+        for contact in self.contacts:
+            area_code = contact.phone_number[1:4]
+            if area_code not in groups:
+                groups[area_code] = []
+            groups[area_code].append(contact)
+        groups = dict(sorted(groups.items())) # Sort the dictionary by key
+        logging.info(f"Contacts grouped by area code: {groups}")
+        return groups
+         
     def export_contacts(self, csv_file):
         # Export contacts to a CSV file
-        with open(csv_file, 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(['first_name', 'last_name', 'phone_number', 'email', 'address'])
-            for contact in self.contacts:
-                writer.writerow([contact.first_name, contact.last_name, contact.phone_number, contact.email, contact.address])
-            logging.info(f"Contacts exported to {csv_file}")
-    
+        try:
+            with open(csv_file, 'w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(['first_name', 'last_name', 'phone_number', 'email', 'address'])
+                for contact in self.contacts:
+                    writer.writerow([contact.first_name, contact.last_name, contact.phone_number, contact.email, contact.address])
+                logging.info(f"Contacts exported to {csv_file}")
+        except IOError as ioe:
+            logging.error(f"Error writing to file {csv_file}: {ioe}")
+            print(f"Error writing to file {csv_file}: {ioe}")
 

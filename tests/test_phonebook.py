@@ -35,7 +35,32 @@ class Test_PhoneBook(unittest.TestCase):
 
         results = self.phonebook.search_contact_by_time(datetime.datetime(2024, 1, 1), datetime.datetime(2024, 12, 31))
         self.assertEqual(len(results), 4)
+    
+    def test_group_contact_by_initial_letter(self):
+        self.phonebook.import_contacts("data.csv")
+        # Group contacts by first name
+        results = self.phonebook.group_contacts_by_initial_letter("first_name")
+        self.assertEqual(len(results), 3)
+        self.assertEqual(len(results['J']), 2)
+        self.assertEqual(len(results['L']), 1)
+        self.assertEqual(len(results['E']), 1)
+        self.assertIsNone(results.get('T'))
+        # Group contacts by last name
+        results = self.phonebook.group_contacts_by_initial_letter("last_name")
+        self.assertEqual(len(results), 3)
+        self.assertEqual(len(results['D']), 1)
+        self.assertEqual(len(results['S']), 2)
+        self.assertEqual(len(results['Y']), 1)
+        self.assertIsNone(results.get('T'))
 
+    def test_export_contacts(self):
+        self.phonebook.import_contacts("data.csv")
+        self.phonebook.export_contacts("export.csv")
+        with open("export.csv", "r") as file:
+            lines = file.readlines()
+            self.assertEqual(len(lines), 5)
+            self.assertEqual(lines[0].strip(), "first_name,last_name,phone_number,email,address")
+            self.assertEqual(lines[1].strip(), "John,Smith,(123) 456-7890,john@example.com,456 Edward St")
         
 
 if __name__ == "__main__":

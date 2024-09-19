@@ -5,12 +5,13 @@ from datetime import datetime
 
 ATTRIBUTE_DICT = {"1": "first_name", "2": "last_name", "3": "created_at", "4": "updated_at"}
 ORDER_DICT = {"1": False, "2": True}
+GROUP_DICT = {"1": "first_name", "2": "last_name", "3": "phone_number"}
 
 class PhoneBookCLI:
     def __init__(self):
         self.phonebook = PhoneBook()
 
-    def add_contact(self):
+    def create_single_contact(self):
         first_name = input("First Name (Required): ")
         last_name = input("Last Name (Required): ")
         phone_number = input("Phone Number (Required, Format (###) ###-####): ")
@@ -32,7 +33,7 @@ class PhoneBookCLI:
         except ValueError as ve:
             print(f"Error: {ve}")
     
-    def search_contact(self):
+    def search_contact_by_name_or_phone_number(self):
         keyword = input("Search by name or phone number: ")
         results = self.phonebook.search_contact(keyword)
         if results:
@@ -101,17 +102,46 @@ class PhoneBookCLI:
         for contact in contacts:
             print(contact)
 
-    def list_contacts(self):
+    def group_contacts_by_initial_letter(self, key):
+        contacts = self.phonebook.group_contacts_by_initial_letter(key)
+        for initial, contact_list in contacts.items():
+            print(f"{len(contact_list)} contacts with {key} starting with '{initial}':")
+            for contact in contact_list:
+                print(contact)
+    
+    def group_contacts_by_area_code(self):
+        contacts = self.phonebook.group_contacts_by_area_code()
+        for area_code, contact_list in contacts.items():
+            print(f"{len(contact_list)} contacts with phone number area code '{area_code}':")
+            for contact in contact_list:
+                print(contact)
+
+    def list_grouped_contacts(self):
+        while True:
+            print("1. Group by First Name")
+            print("2. Group by Last Name")
+            print("3. Group by Phone Area Code")
+            print("4. Return to main menu")
+            choice = input("Enter your choice: ")
+            if choice == "4":
+                return
+            if choice <= "0" or choice > "4":
+                print("Invalid choice. Please enter a number between 1 and 3.")
+                continue
+            elif choice == "1" or choice == "2":
+                key = ATTRIBUTE_DICT[choice]
+                self.group_contacts_by_initial_letter(key)
+            else:
+                self.group_contacts_by_area_code()
+
+    
+    def list_all_contacts(self):
         contacts = self.phonebook.list_contacts()
-        # Print message if no contacts are found
-        if not contacts:
-            print("No contacts found.")
-            return
         # Note that print(contacts) will result in printing None at the end.
         for contact in contacts:
             print(contact)
     
-    def list_contacts_sorted(self):
+    def list_sorted_contacts(self):
         while True:
             print("1. Sort by First Name")
             print("2. Sort by Last Name")
@@ -142,10 +172,6 @@ class PhoneBookCLI:
         print("Contacts sorted by", key, "in", "ascending" if not order else "descending", "order:")
         for contact in contacts:
             print(contact)
-
-                
-
-
 
     def update_contact(self):
         # Search cantact using keyword
@@ -182,7 +208,7 @@ class PhoneBookCLI:
             print(f"Error: {ve}")
             return
 
-    def delete_contact(self):
+    def delete_contact_by_search(self):
         # Search cantact using keyword
         keyword = input("Search by name or phone number: ")
         results = self.phonebook.search_contact(keyword)
@@ -194,20 +220,34 @@ class PhoneBookCLI:
         for idx, contact in enumerate(results):
             print(f"{idx}: {contact}")
         # Select contact to delete
-        contact_index = int(input("Enter contact index to delete: "))
-        # If the contact index is invalid, print message and return
-        if contact_index < 0 or contact_index >= len(results):
-            print("Invalid contact index.")   
+        contact_index = input("Enter contact index to delete (Seperate multiple choices with ','): ")
+
+        contact_indices = [int(idx.strip()) for idx in contact_index.split(',')]
+
+        for idx in contact_indices:
+
+            # If the contact index is invalid, print message and return
+            if idx < 0 or idx >= len(results):
+                print(f"Contact index {idx} is invalid.")   
+                continue
+            
+            contact = results[idx]
+
+            # Delete the contact
+            self.phonebook.delete_contact(contact)
+
+            # Print the deleted contact
+            print(f"Contact deleted:{contact}")
+
+    def delete_all_contacts(self):
+        print("Are you sure you want to delete all contacts?(y/n)")
+        choice = input("Enter your choice: ")
+        if choice.lower() == "y":
+            self.phonebook.delete_all_contacts()
+            print("All contacts deleted.")
+        else: 
             return
-        
-        contact = results[contact_index]
-
-        # Delete the contact
-        self.phonebook.delete_contact(contact)
-
-        # Print the deleted contact
-        print(f"Contact deleted:{contact}")
-
+    
     def main(self):
         while True:
             print("1. Add Contact")
@@ -221,40 +261,88 @@ class PhoneBookCLI:
             choice = input("Enter your choice: ")
 
             if choice == "1":
-                print("1. Add Contact manually")
+                print("1. Add contacts manually")
                 print("2. Load contacts from CSV file")
+                print("Enter any other key to return to the main menu")
                 choice = input("Enter your choice: ")
                 if choice == "1":
-                    self.add_contact()
+                    while True:
+                        self.create_single_contact()
+                        choice = input("Add another contact? (y/n): ")
+                        if choice.lower() != "y":
+                            break
                 elif choice == "2":
-                    self.import_contacts()
+                    while True:
+                        self.import_contacts()
+                        choice = input("Import another CSV file? (y/n): ")
+                        if choice.lower() != "y":
+                            break
 
             elif choice == "2":
                 print("1. Search by name or phone number")
                 print("2. Search by updated time range")
                 print("3. Search by created time range")
-                print("4. Return to main menu")
+                print("Enter any other key to return to the main menu")
                 choice = input("Enter your choice: ")
                 if choice == "1":
-                    self.search_contact()
+                    while True:
+                        self.search_contact_by_name_or_phone_number()
+                        choice = input("Search another contact? (y/n): ")
+                        if choice.lower() != "y":
+                            break
                 elif choice == "2":
-                    self.search_contact_by_updated_time()
+                    while True:
+                        self.search_contact_by_updated_time()
+                        choice = input("Search another contact? (y/n): ")
+                        if choice.lower() != "y":
+                            break
                 elif choice == "3":
-                    self.search_contact_by_created_time()
-                elif choice == "4":
-                    continue
+                    while True:
+                        self.search_contact_by_created_time()
+                        choice = input("Search another contact? (y/n): ")
+                        if choice.lower() != "y":
+                            break
 
             elif choice == "3":
-                self.list_contacts()
+                contacts = self.phonebook.list_contacts()
+                # Print message if no contacts are found
+                if not contacts:
+                    print("No contacts found.")
+                    continue
+                print("1. List all contacts")
+                print("2. List contacts in groups")
+                print("Enter any other key to return to the main menu")
+                choice = input("Enter your choice: ")
+                if choice == "1":
+                    self.list_all_contacts()
+                elif choice == "2":
+                    self.list_grouped_contacts()
 
             elif choice == "4":
                 self.update_contact()
 
             elif choice == "5":
-                self.delete_contact()
+                while True:
+                    print("1. Search to delete contacts")
+                    print("2. Delete all contacts")
+                    print("Enter any other key to return to the main menu")
+                    choice = input("Enter your choice: ")
+                    if choice == "1":
+                        while True:
+                            self.delete_contact_by_search()
+                            choice = input("Delete other contacts by search? (y/n): ")
+                            if choice.lower() != "y":
+                                break
+                    elif choice == "2":
+                        self.delete_all_contacts()
+                        print("All contacts deleted.")
+                        break
+                    else:
+                        break
+                    
 
             elif choice == "6":
-                self.list_contacts_sorted()
+                self.list_sorted_contacts()
 
             elif choice == "7":
                 break
