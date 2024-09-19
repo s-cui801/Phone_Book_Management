@@ -8,8 +8,14 @@ class Test_PhoneBook(unittest.TestCase):
     def setUp(self):
         self.phonebook = PhoneBook()
     def test_add_contact(self):
-        self.phonebook.add_contact(Contact("John", "Doe", "1234567890", "john@gmail.com", "123 Main St"))  # Add a contact
+        contact = Contact("John", "Doe", "1234567890", "john@gmail.com", "123 Main St")
+        self.phonebook.add_contact(contact)  # Add a contact
         self.assertEqual(len(self.phonebook.contacts), 1)
+        self.assertEqual(self.phonebook.contacts[0].first_name, "John")
+        self.assertEqual(self.phonebook.contacts[0].last_name, "Doe")
+        self.assertEqual(self.phonebook.contacts[0].phone_number, "1234567890")
+        self.assertEqual(self.phonebook.contacts[0].email, "john@gmail.com")
+        self.assertEqual(self.phonebook.contacts[0].address, "123 Main St")
     def test_import_contacts(self):
         self.phonebook.import_contacts("data.csv")  # Import contacts from CSV file
         self.assertEqual(len(self.phonebook.contacts), 4)
